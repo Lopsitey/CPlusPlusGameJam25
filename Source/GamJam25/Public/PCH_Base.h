@@ -7,6 +7,7 @@
 #include "PCH/Inputs/IA_Interface.h"
 #include "PCH_Base.generated.h"
 
+class UHealthComponent;
 class UCameraComponent;
 class USpringArmComponent;
 
@@ -29,6 +30,9 @@ public:
 	virtual void Action_Implementation(const FInputActionInstance& Instance) override;
 	virtual void Look_Implementation(const FInputActionInstance& Instance) override;
 
+	UFUNCTION()
+	void PlayerDeath();
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -39,7 +43,11 @@ protected:
 	UPROPERTY(VisibleAnywhere);
 	TObjectPtr<UCameraComponent> Camera;
 
+	UPROPERTY(VisibleAnywhere);
+	TObjectPtr<UHealthComponent> Health;
+	
 	UPROPERTY(BlueprintReadWrite, Category= Speeds);
 	float WalkSpeed= 400.0f;
+
 	
 };

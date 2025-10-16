@@ -26,6 +26,8 @@ void APC_Base::BeginPlay()
 
 void APC_Base::SetupInputComponent()
 {
+	Super::SetupInputComponent();
+	
 	if (UEnhancedInputComponent* PEI = Cast<UEnhancedInputComponent>(InputComponent))
 	{
 		PEI->BindAction(InputActions->Move.LoadSynchronous(),ETriggerEvent::Triggered, this, &APC_Base::Move);

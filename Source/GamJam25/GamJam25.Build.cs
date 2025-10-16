@@ -7,8 +7,10 @@ public class GamJam25 : ModuleRules
 	public GamJam25(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
-	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput" });
+
+		PublicDependencyModuleNames.AddRange(new string[]
+			{ "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "Niagara"
+			});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 

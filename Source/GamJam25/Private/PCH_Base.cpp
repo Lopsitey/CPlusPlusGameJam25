@@ -3,9 +3,11 @@
 
 #include "GamJam25/Public/PCH_Base.h"
 
+#include "HealthComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "PCH/PC_Base.h"
 
 
 // Sets default values
@@ -20,7 +22,9 @@ APCH_Base::APCH_Base()
 	Camera = CreateDefaultSubobject<UCameraComponent>("Camera");
 	Camera->SetupAttachment(SpringArm);
 
-	bUseControllerRotationPitch = true;
+	Health=CreateDefaultSubobject<UHealthComponent>("Health");
+
+	bUseControllerRotationPitch = true;//!!!---!!!
 }
 
 // Called when the game starts or when spawned
@@ -28,7 +32,15 @@ void APCH_Base::BeginPlay()
 {
 	Super::BeginPlay();
 
-
+	if (Health)
+	{
+		Health->OnDeath.AddUniqueDynamic(this, &APCH_Base::PlayerDeath);
+	}
+	else
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "No health component found");
+	}
+	
 	GetCharacterMovement()->MaxWalkSpeed=WalkSpeed;
 }
 
@@ -52,7 +64,7 @@ void APCH_Base::Move_Implementation(const FInputActionInstance& Instance)
 			const FVector Direction = MovementRotation.RotateVector(FVector::ForwardVector);
 			AddMovementInput(Direction, MoveValue.Y);
 		}
-		if (FMath::Abs(MoveValue.Y) > KINDA_SMALL_NUMBER)
+		if (FMath::Abs(MoveValue.X) > KINDA_SMALL_NUMBER)
 		{
 			const FVector Direction = MovementRotation.RotateVector(FVector::RightVector);
 			AddMovementInput(Direction, MoveValue.X);
@@ -69,9 +81,6 @@ void APCH_Base::JumpAction_Implementation(const FInputActionInstance& Instance)
 void APCH_Base::Action_Implementation(const FInputActionInstance& Instance)
 {
 	IIA_Interface::Action_Implementation(Instance);
-	bool bValue = Instance.GetValue().Get<bool>();
-
-	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, "bValue: " + bValue);
 }
 
 void APCH_Base::Look_Implementation(const FInputActionInstance& Instance)
@@ -90,6 +99,14 @@ void APCH_Base::Look_Implementation(const FInputActionInstance& Instance)
 		}
 			
 	}
+}
+
+void APCH_Base::PlayerDeath()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "Player Died");
+	APC_Base* PC = Cast<APC_Base>(GetController());
+	PC->SetIgnoreLookInput(true);
+	PC->SetIgnoreMoveInput(true);
 }
 
 // Called to bind functionality to input
