@@ -1,12 +1,10 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
-
-
-#include "GamJam25/Public/PCH_Base.h"
+﻿#include "PCH/PCH_Base.h"
 
 #include "HealthComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Interactibles/InteractionInterface.h"
 #include "PCH/PC_Base.h"
 
 
@@ -24,7 +22,7 @@ APCH_Base::APCH_Base()
 
 	Health=CreateDefaultSubobject<UHealthComponent>("Health");
 
-	bUseControllerRotationPitch = true;//!!!---!!!
+	//bUseControllerRotationPitch = true;//!!!---!!!
 }
 
 // Called when the game starts or when spawned
@@ -81,6 +79,11 @@ void APCH_Base::JumpAction_Implementation(const FInputActionInstance& Instance)
 void APCH_Base::Action_Implementation(const FInputActionInstance& Instance)
 {
 	IIA_Interface::Action_Implementation(Instance);
+	if (mOverlappedActor)
+	{
+		//later
+		IInteractionInterface::Execute_Interact(mOverlappedActor);	
+	}
 }
 
 void APCH_Base::Look_Implementation(const FInputActionInstance& Instance)
@@ -99,6 +102,12 @@ void APCH_Base::Look_Implementation(const FInputActionInstance& Instance)
 		}
 			
 	}
+}
+
+void APCH_Base::SetOverlappedActor_Implementation(AActor* OverlappedActor)
+{
+	IPCH_Interface::SetOverlappedActor_Implementation(OverlappedActor);
+	mOverlappedActor = OverlappedActor;
 }
 
 void APCH_Base::PlayerDeath()

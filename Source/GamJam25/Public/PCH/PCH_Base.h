@@ -1,10 +1,9 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
-
-#pragma once
+﻿#pragma once
 
 #include "CoreMinimal.h"
+#include "PCH_Interface.h"
 #include "GameFramework/Character.h"
-#include "PCH/Inputs/IA_Interface.h"
+#include "Inputs/IA_Interface.h"
 #include "PCH_Base.generated.h"
 
 class UHealthComponent;
@@ -12,7 +11,7 @@ class UCameraComponent;
 class USpringArmComponent;
 
 UCLASS()
-class GAMJAM25_API APCH_Base : public ACharacter, public IIA_Interface
+class GAMJAM25_API APCH_Base : public ACharacter, public IIA_Interface, public IPCH_Interface
 {
 	GENERATED_BODY()
 
@@ -29,6 +28,11 @@ public:
 	virtual void JumpAction_Implementation(const FInputActionInstance& Instance) override;
 	virtual void Action_Implementation(const FInputActionInstance& Instance) override;
 	virtual void Look_Implementation(const FInputActionInstance& Instance) override;
+
+	virtual void SetOverlappedActor_Implementation(AActor* OverlappedActor) override;
+
+	UPROPERTY(BlueprintReadWrite, Category=Interactions);
+	TObjectPtr<AActor> mOverlappedActor;
 
 	UFUNCTION()
 	void PlayerDeath();

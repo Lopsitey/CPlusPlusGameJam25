@@ -6,6 +6,7 @@
 #include "Components/ArrowComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "NiagaraFunctionLibrary.h"
+#include "GamJam25/Managers/TurretWorldManager.h"
 
 
 // Sets default values
@@ -31,7 +32,27 @@ ATurret_Base::ATurret_Base()
 void ATurret_Base::BeginPlay()
 {
 	Super::BeginPlay();
+
+	if (UWorld* World = GetWorld())
+	{
+		if (UTurretWorldManager* Manager = World->GetSubsystem<UTurretWorldManager>())
+		{
+			Manager->RegisterTurret(this);
+		}
+	}
+}
+
+void ATurret_Base::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	if (UWorld* World = GetWorld())
+	{
+		if (UTurretWorldManager* Manager = World->GetSubsystem<UTurretWorldManager>())
+		{
+			Manager->UnregisterTurret(this);
+		}
+	}
 	
+	Super::EndPlay(EndPlayReason);
 }
 
 // Called every frame
@@ -56,13 +77,13 @@ void ATurret_Base::Fire_Implementation()
 
 void ATurret_Base::SetTurretEnabled(bool bEnabled)
 {
-	bTurretIsEnabled=bEnabled;
+	bTurretIsEnabled = bEnabled;
 	if (!bTurretIsEnabled)
 	{
 		GetWorldTimerManager().ClearTimer(FireTimer);
 	}
 	else
 	{
-		GetWorldTimerManager().SetTimer(FireTimer, this, & ATurret_Base::Fire, FireSpeed, true);
+		GetWorldTimerManager().SetTimer(FireTimer, this, &ATurret_Base::Fire, FireSpeed, true);
 	}
 }
