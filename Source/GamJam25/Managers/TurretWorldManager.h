@@ -16,15 +16,18 @@ class GAMJAM25_API UTurretWorldManager : public UWorldSubsystem
 	GENERATED_BODY()
 
 public:
-	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
+	virtual void Initialize(FSubsystemCollectionBase& Collection) override;//Called when the subsystem is initialized
 
-	virtual void Deinitialize() override;
+	virtual void Deinitialize() override;//Called when the subsystem is deinitialized
 
 	void RegisterTurret(ATurret_Base* TurretActor);
 	void UnregisterTurret(ATurret_Base* TurretActor);
 
 	UFUNCTION(BlueprintCallable)
 	void DisableAllTurrets();
+	
+	UFUNCTION(BlueprintCallable)
+	void EnableAllTurrets();
 	
 private:
 	UPROPERTY()

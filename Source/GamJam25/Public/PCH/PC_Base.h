@@ -34,4 +34,11 @@ public:
 	void Look(const FInputActionInstance& Instance);
 	void Jump(const FInputActionInstance& Instance);
 	void Action(const FInputActionInstance& Instance);
+
+private:
+	UFUNCTION()
+	void UpdateScore(uint8 score);
+	
+	UFUNCTION()
+	void GameWin();
 };

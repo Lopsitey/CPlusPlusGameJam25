@@ -8,14 +8,12 @@
 void UTurretWorldManager::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
-	UE_LOG(LogTemp, Warning, TEXT("TurretWorldManager::Initialize"));
 }
 
 void UTurretWorldManager::Deinitialize()
 {
 	RegisteredTurrets.Empty();
 	Super::Deinitialize();
-	UE_LOG(LogTemp, Warning, TEXT("TurretWorldManager::Deinitialize"));
 }
 
 void UTurretWorldManager::RegisterTurret(ATurret_Base* TurretActor)
@@ -39,4 +37,17 @@ void UTurretWorldManager::DisableAllTurrets()
 			TurretActor->SetTurretEnabled(false);
 		}
 	}
+	UE_LOG(LogTemp,Log,TEXT("All turrets disabled"));
+}
+
+void UTurretWorldManager::EnableAllTurrets()
+{
+	for (auto& TurretWeakPtr:RegisteredTurrets)
+	{
+		if (ATurret_Base* TurretActor = TurretWeakPtr.Get())
+		{
+			TurretActor->SetTurretEnabled(true);
+		}
+	}
+	UE_LOG(LogTemp,Log,TEXT("All turrets enabled"));
 }

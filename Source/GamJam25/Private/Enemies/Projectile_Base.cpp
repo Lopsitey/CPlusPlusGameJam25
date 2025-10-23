@@ -51,6 +51,6 @@ void AProjectile_Base::ProjectileHit(UPrimitiveComponent* HitComponent, AActor* 
 	UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
 	UGameplayStatics::ApplyDamage(OtherActor,BaseDamage,nullptr,this,nullptr);
-	//VFX on hit!!!
+	//TODO VFX on hit!!!
 	Destroy();
 }

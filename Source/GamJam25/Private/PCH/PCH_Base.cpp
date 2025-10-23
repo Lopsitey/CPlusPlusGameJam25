@@ -22,7 +22,11 @@ APCH_Base::APCH_Base()
 
 	Health=CreateDefaultSubobject<UHealthComponent>("Health");
 
-	//bUseControllerRotationPitch = true;//!!!---!!!
+	bUseControllerRotationYaw = true;
+	bUseControllerRotationPitch = false;
+	bUseControllerRotationRoll = true;
+	SpringArm->bUsePawnControlRotation = true;
+
 }
 
 // Called when the game starts or when spawned
@@ -81,7 +85,7 @@ void APCH_Base::Action_Implementation(const FInputActionInstance& Instance)
 	IIA_Interface::Action_Implementation(Instance);
 	if (mOverlappedActor)
 	{
-		//later
+		
 		IInteractionInterface::Execute_Interact(mOverlappedActor);	
 	}
 }

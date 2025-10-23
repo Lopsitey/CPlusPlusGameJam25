@@ -40,7 +40,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category="TurretData")
 	float FireSpeed = 0.5f;
 
-	UPROPERTY(EditDefaultsOnly, Category="TurretData")
+	UPROPERTY(EditInstanceOnly, Category="TurretData")
 	FTimerHandle FireTimer;
 
 	UPROPERTY(EditDefaultsOnly, Category="TurretData")

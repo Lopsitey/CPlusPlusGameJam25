@@ -4,6 +4,7 @@
 #include "GamJam25/Public/PCH/PC_Base.h"
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
+#include "My_GM.h"
 #include "GamJam25/PCH/Inputs/IADataConfig.h"
 #include "GamJam25/Public/PCH/Inputs/IA_Interface.h"
 
@@ -21,6 +22,12 @@ void APC_Base::BeginPlay()
 	if (GetPawn())
 	{
 		LocalPCH = GetPawn();	
+	}
+
+	if (AMy_GM* GM = Cast<AMy_GM>(GetWorld()->GetAuthGameMode()))
+	{
+		GM->OnUpdateCollectibles.AddUniqueDynamic(this, &APC_Base::UpdateScore);
+		GM->CollectiblesComplete.AddUniqueDynamic(this, &APC_Base::GameWin);
 	}
 }
 
@@ -55,4 +62,15 @@ void APC_Base::Jump(const FInputActionInstance& Instance)
 void APC_Base::Action(const FInputActionInstance& Instance)
 {
 	IIA_Interface::Execute_Action(LocalPCH,Instance);
+}
+
+void APC_Base::UpdateScore(uint8 score)
+{
+	GEngine->AddOnScreenDebugMessage(-1,20.f,FColor::Blue, FString::Printf(TEXT("Score: %d"), score));
+	//for printing types which aren't string 
+}
+
+void APC_Base::GameWin()
+{
+	GEngine->AddOnScreenDebugMessage(-1,20.f,FColor::Green, TEXT("You Win!"));
 }

@@ -1,9 +1,9 @@
 ﻿#pragma once
 
 #include "CoreMinimal.h"
+#include "Inputs/IA_Interface.h"
 #include "PCH_Interface.h"
 #include "GameFramework/Character.h"
-#include "Inputs/IA_Interface.h"
 #include "PCH_Base.generated.h"
 
 class UHealthComponent;
@@ -31,9 +31,6 @@ public:
 
 	virtual void SetOverlappedActor_Implementation(AActor* OverlappedActor) override;
 
-	UPROPERTY(BlueprintReadWrite, Category=Interactions);
-	TObjectPtr<AActor> mOverlappedActor;
-
 	UFUNCTION()
 	void PlayerDeath();
 
@@ -53,5 +50,6 @@ protected:
 	UPROPERTY(BlueprintReadWrite, Category= Speeds);
 	float WalkSpeed= 400.0f;
 
-	
+	UPROPERTY(BlueprintReadWrite, Category=Interactions);
+	TObjectPtr<AActor> mOverlappedActor;
 };

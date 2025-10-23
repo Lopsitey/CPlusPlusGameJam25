@@ -53,14 +53,27 @@ void AButton_Base::Interact_Implementation()
 	IInteractionInterface::Interact_Implementation();
 	if (!bInteracted)
 	{
-		IInteractionInterface::Interact_Implementation();
 		if (UWorld* World = GetWorld())
 		{
 			if (UTurretWorldManager* Manager = World->GetSubsystem<UTurretWorldManager>())
 			{
 				Manager->DisableAllTurrets();
 				bInteracted = true;
-			}			
+			}
+			GEngine->AddOnScreenDebugMessage(-1,2.0f,FColor::Red, TEXT("Turrets Disabled"));
+		}
+	}
+	else
+	{
+		if (UWorld* World = GetWorld())
+		{
+			if (UTurretWorldManager* Manager = World->GetSubsystem<UTurretWorldManager>())
+			{
+				Manager->EnableAllTurrets();
+				bInteracted = false;
+				
+			}
+			GEngine->AddOnScreenDebugMessage(-1,2.0f,FColor::Green, TEXT("Turrets Enabled"));
 		}
 	}
 }
@@ -71,6 +84,7 @@ void AButton_Base::ButtonOverlapped(UPrimitiveComponent* OverlappedComponent, AA
 	if (UKismetSystemLibrary::DoesImplementInterface(OtherActor,UPCH_Interface::StaticClass()))
 	{
 		IPCH_Interface::Execute_SetOverlappedActor(OtherActor,this);
+		Interact_Implementation();
 	}
 }
 

@@ -40,6 +40,7 @@ void ATurret_Base::BeginPlay()
 			Manager->RegisterTurret(this);
 		}
 	}
+	GetWorldTimerManager().SetTimer(FireTimer, this, &ATurret_Base::Fire, FireSpeed, true);
 }
 
 void ATurret_Base::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -78,12 +79,12 @@ void ATurret_Base::Fire_Implementation()
 void ATurret_Base::SetTurretEnabled(bool bEnabled)
 {
 	bTurretIsEnabled = bEnabled;
-	if (!bTurretIsEnabled)
+	if (bTurretIsEnabled)
 	{
-		GetWorldTimerManager().ClearTimer(FireTimer);
+		GetWorldTimerManager().SetTimer(FireTimer, this, &ATurret_Base::Fire, FireSpeed, true);
 	}
 	else
 	{
-		GetWorldTimerManager().SetTimer(FireTimer, this, &ATurret_Base::Fire, FireSpeed, true);
+		GetWorldTimerManager().ClearTimer(FireTimer);
 	}
 }
