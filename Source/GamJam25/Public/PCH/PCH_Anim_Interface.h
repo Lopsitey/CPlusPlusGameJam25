@@ -4,11 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
-#include "PCH_Interface.generated.h"
+#include "PCH_Anim_Interface.generated.h"
 
 // This class does not need to be modified.
 UINTERFACE()
-class UPCH_Interface : public UInterface
+class UPCH_Anim_Interface : public UInterface
 {
 	GENERATED_BODY()
 };
@@ -16,18 +16,12 @@ class UPCH_Interface : public UInterface
 /**
  * 
  */
-class GAMJAM25_API IPCH_Interface
+class GAMJAM25_API IPCH_Anim_Interface
 {
 	GENERATED_BODY()
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
-    UFUNCTION(BlueprintCallable,BlueprintNativeEvent)
-    void SetOverlappedActor(AActor* OverlappedActor);
-
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	void SpellCast();
-
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	void EnableSpellCasting(bool bEnableFire);
+	void PlaySpellCastAnimation(bool bCanFire);
 };

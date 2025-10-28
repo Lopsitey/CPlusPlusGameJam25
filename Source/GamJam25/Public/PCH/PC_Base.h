@@ -34,6 +34,7 @@ public:
 	void Look(const FInputActionInstance& Instance);
 	void Jump(const FInputActionInstance& Instance);
 	void Action(const FInputActionInstance& Instance);
+	void Fire(const FInputActionInstance& Instance);
 
 private:
 	UFUNCTION()

@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
 #include "InputAction.h"
+#include "PCH/PC_Base.h"
 #include "IA_Interface.generated.h"
 
 // This class does not need to be modified.
@@ -34,4 +35,7 @@ public:
 	
 	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)
 	void Look(const FInputActionInstance& Instance);
+
+	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)
+	void Fire(const FInputActionInstance& Instance);
 };

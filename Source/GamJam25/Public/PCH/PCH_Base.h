@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "PCH_Base.generated.h"
 
+class ASpellBase;
 class UHealthComponent;
 class UCameraComponent;
 class USpringArmComponent;
@@ -28,11 +29,29 @@ public:
 	virtual void JumpAction_Implementation(const FInputActionInstance& Instance) override;
 	virtual void Action_Implementation(const FInputActionInstance& Instance) override;
 	virtual void Look_Implementation(const FInputActionInstance& Instance) override;
-
+	virtual void Fire_Implementation(const FInputActionInstance& Instance) override;
+	
 	virtual void SetOverlappedActor_Implementation(AActor* OverlappedActor) override;
+
+	virtual void SpellCast_Implementation() override;
+	virtual void EnableSpellCasting_Implementation(bool bEnableFire) override;
 
 	UFUNCTION()
 	void PlayerDeath();
+
+private:
+	void AttachSpell();
+
+	UPROPERTY()
+	ASpellBase* EquippedSpell;
+
+	UPROPERTY()
+	TObjectPtr<USkeletalMeshComponent> SkeletalMesh;
+
+	UPROPERTY()
+	TObjectPtr<UAnimInstance> AnimInstance;
+
+	bool bCanfire = true;
 
 protected:
 	// Called when the game starts or when spawned
@@ -52,4 +71,7 @@ protected:
 
 	UPROPERTY(BlueprintReadWrite, Category=Interactions);
 	TObjectPtr<AActor> mOverlappedActor;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category=Spell)
+	TSubclassOf<ASpellBase> SpellWeapon;
 };

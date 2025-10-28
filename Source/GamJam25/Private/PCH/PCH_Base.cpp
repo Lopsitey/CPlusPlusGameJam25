@@ -5,6 +5,8 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Interactibles/InteractionInterface.h"
+#include "Interactibles/Pickups/Spells/SpellBase.h"
+#include "PCH/PCH_Anim_Interface.h"
 #include "PCH/PC_Base.h"
 
 
@@ -44,6 +46,21 @@ void APCH_Base::BeginPlay()
 	}
 	
 	GetCharacterMovement()->MaxWalkSpeed=WalkSpeed;
+
+	SkeletalMesh = GetMesh();
+	if (!SkeletalMesh)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "No skeletal mesh component found");
+		return;
+	}
+	AnimInstance = SkeletalMesh->GetAnimInstance();
+	if (!AnimInstance)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "No animation instance found");
+		return;
+	}
+	
+	AttachSpell();
 }
 
 // Called every frame
@@ -114,6 +131,18 @@ void APCH_Base::SetOverlappedActor_Implementation(AActor* OverlappedActor)
 	mOverlappedActor = OverlappedActor;
 }
 
+void APCH_Base::SpellCast_Implementation()
+{
+	IPCH_Interface::SpellCast_Implementation();
+	EquippedSpell->SpellCast();
+}
+
+void APCH_Base::EnableSpellCasting_Implementation(bool bEnableFire)
+{
+	IPCH_Interface::EnableSpellCasting_Implementation(bEnableFire);
+	bCanfire=bEnableFire;
+}
+
 void APCH_Base::PlayerDeath()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "Player Died");
@@ -122,9 +151,49 @@ void APCH_Base::PlayerDeath()
 	PC->SetIgnoreMoveInput(true);
 }
 
+void APCH_Base::AttachSpell()
+{
+	if (!SpellWeapon)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "No spell class assigned");
+		return;
+	}
+
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.Owner=this;
+	SpawnParams.Instigator=GetInstigator();
+
+	EquippedSpell=GetWorld()
+	->SpawnActor<ASpellBase>(SpellWeapon,FVector::ZeroVector,FRotator::ZeroRotator, SpawnParams);
+
+	if (!EquippedSpell)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "No spell class assigned");
+		return;
+	}
+
+	const FName AttachmentSocketName = FName("SpellSocket");
+	EquippedSpell->AttachToComponent(SkeletalMesh,FAttachmentTransformRules::SnapToTargetIncludingScale,AttachmentSocketName);
+}
+
 // Called to bind functionality to input
 void APCH_Base::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }
+
+void APCH_Base::Fire_Implementation(const FInputActionInstance& Instance)
+{
+	if (!SkeletalMesh)
+	{
+		return;
+	}
+	if (bCanfire)
+	{
+		bCanfire = false;
+		IPCH_Anim_Interface::Execute_PlaySpellCastAnimation(AnimInstance, true);
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "FIRE");
+	}
+}
+
 

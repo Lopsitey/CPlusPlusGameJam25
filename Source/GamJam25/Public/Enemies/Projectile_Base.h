@@ -36,7 +36,7 @@ public:
 	TObjectPtr<UProjectileMovementComponent> ProjectileMovementComponent;
 
 	UPROPERTY(EditDefaultsOnly, Category="Damage")
-	float BaseDamage = 50.0f;
+	float BaseDamage = 20.0f;
 
 	UFUNCTION()
 	void ProjectileHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
