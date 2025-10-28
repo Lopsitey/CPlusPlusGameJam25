@@ -12,24 +12,29 @@ AFireSpell::AFireSpell()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	
 	FirePoint = CreateDefaultSubobject<UArrowComponent>("Arrow 1");
 	FirePoint2 = CreateDefaultSubobject<UArrowComponent>("Arrow 2");
-	FirePoint3 =CreateDefaultSubobject<UArrowComponent>("Arrow 3");
+	FirePoint3 = CreateDefaultSubobject<UArrowComponent>("Arrow 3");
 
 	SetRootComponent(FirePoint);
 	FirePoint2->SetupAttachment(FirePoint);
 	FirePoint3->SetupAttachment(FirePoint);
 	
 	FirePoint->SetRelativeLocation(FVector(60,0,0));
-	FirePoint2->SetRelativeLocation(FVector(60,20,0));
-	FirePoint3->SetRelativeLocation(FVector(60,-20,0));
+	FirePoint2->SetRelativeLocation(FVector(-20,-90,0));
+	FirePoint3->SetRelativeLocation(FVector(-20,90,0));
+
+	FirePoint2->SetRelativeRotation(FRotator(0,-15,-90));
+	FirePoint3->SetRelativeRotation(FRotator(0,15,-90));
 }
 
 // Called when the game starts or when spawned
 void AFireSpell::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	GetComponents<UArrowComponent>(FirePoints);	
 }
 
 void AFireSpell::SpellCast_Implementation()

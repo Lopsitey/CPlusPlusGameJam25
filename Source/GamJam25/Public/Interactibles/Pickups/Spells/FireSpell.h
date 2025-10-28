@@ -36,6 +36,7 @@ protected:
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	
 private:
 	TArray<TObjectPtr<UArrowComponent>>FirePoints;
 	uint8 ActiveFirePoint=0;

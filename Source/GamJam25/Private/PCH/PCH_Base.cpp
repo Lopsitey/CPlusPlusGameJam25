@@ -163,8 +163,7 @@ void APCH_Base::AttachSpell()
 	SpawnParams.Owner=this;
 	SpawnParams.Instigator=GetInstigator();
 
-	EquippedSpell=GetWorld()
-	->SpawnActor<ASpellBase>(SpellWeapon,FVector::ZeroVector,FRotator::ZeroRotator, SpawnParams);
+	EquippedSpell=GetWorld()->SpawnActor<ASpellBase>(SpellWeapon,FVector::ZeroVector,FRotator::ZeroRotator, SpawnParams);
 
 	if (!EquippedSpell)
 	{
@@ -184,6 +183,8 @@ void APCH_Base::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void APCH_Base::Fire_Implementation(const FInputActionInstance& Instance)
 {
+	IIA_Interface::Fire_Implementation(Instance);
+	
 	if (!SkeletalMesh)
 	{
 		return;
