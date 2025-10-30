@@ -5,7 +5,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 #include "My_GM.h"
-#include "GamJam25/PCH/Inputs/IADataConfig.h"
+#include "GamJam25/Public/PCH/Inputs/IADataConfig.h"
 #include "GamJam25/Public/PCH/Inputs/IA_Interface.h"
 
 void APC_Base::BeginPlay()
@@ -42,6 +42,7 @@ void APC_Base::SetupInputComponent()
 		PEI->BindAction(InputActions->Jump.LoadSynchronous(),ETriggerEvent::Triggered, this, &APC_Base::Jump);
 		PEI->BindAction(InputActions->Action.LoadSynchronous(),ETriggerEvent::Triggered, this, &APC_Base::Action);
 		PEI->BindAction(InputActions->Fire.LoadSynchronous(),ETriggerEvent::Triggered, this, &APC_Base::Fire);
+		PEI->BindAction(InputActions->Scroll.LoadSynchronous(),ETriggerEvent::Triggered, this, &APC_Base::Scroll);
 	}
 }
 
@@ -68,6 +69,11 @@ void APC_Base::Action(const FInputActionInstance& Instance)
 void APC_Base::Fire(const FInputActionInstance& Instance)
 {
 	IIA_Interface::Execute_Fire(LocalPCH,Instance);
+}
+
+void APC_Base::Scroll(const FInputActionInstance& Instance)
+{
+	IIA_Interface::Execute_Scroll(LocalPCH,Instance);
 }
 
 void APC_Base::UpdateScore(uint8 score)

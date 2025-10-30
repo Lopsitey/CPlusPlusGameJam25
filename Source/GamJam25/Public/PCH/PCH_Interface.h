@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Interactibles/Pickups/Spells/SpellBase.h"
 #include "UObject/Interface.h"
 #include "PCH_Interface.generated.h"
 
@@ -30,4 +31,10 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void EnableSpellCasting(bool bEnableFire);
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void AddHealthFromPickup(float val);
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void AddSpellFromPickup(TSubclassOf<ASpellBase> Spell);
 };

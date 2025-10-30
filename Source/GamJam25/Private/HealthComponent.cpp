@@ -52,3 +52,9 @@ void UHealthComponent::OnDamaged(AActor* DamagedActor, float Damage, const class
 	}
 }
 
+void UHealthComponent::AddHealth(float health)
+{
+	CurrentHealth=FMath::Clamp(CurrentHealth+CurrentHealth, 0.f, MaxHealth);
+	UE_LOG(LogTemp,Warning,TEXT("Health: %f"),CurrentHealth);
+}
+

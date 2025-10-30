@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "PCH_Base.generated.h"
 
+class UInventoryComponent;
 class ASpellBase;
 class UHealthComponent;
 class UCameraComponent;
@@ -30,20 +31,28 @@ public:
 	virtual void Action_Implementation(const FInputActionInstance& Instance) override;
 	virtual void Look_Implementation(const FInputActionInstance& Instance) override;
 	virtual void Fire_Implementation(const FInputActionInstance& Instance) override;
+	virtual void Scroll_Implementation(const FInputActionInstance& Instance) override;
 	
 	virtual void SetOverlappedActor_Implementation(AActor* OverlappedActor) override;
 
 	virtual void SpellCast_Implementation() override;
 	virtual void EnableSpellCasting_Implementation(bool bEnableFire) override;
 
+	virtual void AddHealthFromPickup_Implementation(float val) override;
+	virtual void AddSpellFromPickup_Implementation(TSubclassOf<ASpellBase> Spell) override;
+
 	UFUNCTION()
 	void PlayerDeath();
 
 private:
+	UFUNCTION()
 	void AttachSpell();
 
 	UPROPERTY()
 	ASpellBase* EquippedSpell;
+
+	UPROPERTY()
+	TMap<TSubclassOf<ASpellBase>, ASpellBase*> SpawnedSpells;
 
 	UPROPERTY()
 	TObjectPtr<USkeletalMeshComponent> SkeletalMesh;
@@ -51,7 +60,7 @@ private:
 	UPROPERTY()
 	TObjectPtr<UAnimInstance> AnimInstance;
 
-	bool bCanfire = true;
+	bool bCanFire = true;
 
 protected:
 	// Called when the game starts or when spawned
@@ -74,4 +83,7 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category=Spell)
 	TSubclassOf<ASpellBase> SpellWeapon;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UInventoryComponent> InventoryComp;
 };

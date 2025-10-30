@@ -3,7 +3,7 @@
 
 #include "Interactibles/Button_Base.h"
 
-#include "GamJam25/Managers/TurretWorldManager.h"
+#include "GamJam25/Private/Managers/TurretWorldManager.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "PCH/PCH_Interface.h"
 

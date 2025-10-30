@@ -38,4 +38,6 @@ public:
 	UFUNCTION()
 	void OnDamaged(AActor* DamagedActor, float Damage, const class UDamageType* DamageType,
 		AController* InstigatedBy, AActor* DamageCauser);
+
+	void AddHealth(float health);
 };

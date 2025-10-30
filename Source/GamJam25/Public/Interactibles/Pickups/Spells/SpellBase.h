@@ -8,7 +8,7 @@
 
 class AProjectile_Base;//forward declared for use in the projectile class below
 
-UCLASS()
+UCLASS(Abstract)//never needs to be used directly - should always be instantiated
 class GAMJAM25_API ASpellBase : public AActor
 {
 	GENERATED_BODY()

@@ -38,4 +38,7 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)
 	void Fire(const FInputActionInstance& Instance);
+	
+	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)
+	void Scroll(const FInputActionInstance& Instance);
 };

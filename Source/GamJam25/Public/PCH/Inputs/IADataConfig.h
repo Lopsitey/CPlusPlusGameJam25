@@ -26,4 +26,6 @@ public:
 	TSoftObjectPtr<UInputAction> Look;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TSoftObjectPtr<UInputAction> Fire;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	TSoftObjectPtr<UInputAction> Scroll;
 };

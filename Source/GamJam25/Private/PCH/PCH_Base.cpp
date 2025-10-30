@@ -6,6 +6,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Interactibles/InteractionInterface.h"
 #include "Interactibles/Pickups/Spells/SpellBase.h"
+#include "PCH/InventoryComponent.h"
 #include "PCH/PCH_Anim_Interface.h"
 #include "PCH/PC_Base.h"
 
@@ -23,11 +24,14 @@ APCH_Base::APCH_Base()
 	Camera->SetupAttachment(SpringArm);
 
 	Health=CreateDefaultSubobject<UHealthComponent>("Health");
+	InventoryComp = CreateDefaultSubobject<UInventoryComponent>("Inventory");
 
 	bUseControllerRotationYaw = true;
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationRoll = true;
 	SpringArm->bUsePawnControlRotation = true;
+
+	Tags.Add(FName("Player"));
 
 }
 
@@ -58,6 +62,12 @@ void APCH_Base::BeginPlay()
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "No animation instance found");
 		return;
+	}
+
+	if (InventoryComp)
+	{
+		InventoryComp->OnSpellChanged.AddUniqueDynamic(this, &APCH_Base::AttachSpell);
+		InventoryComp->AddSpell(SpellWeapon);
 	}
 	
 	AttachSpell();
@@ -140,7 +150,21 @@ void APCH_Base::SpellCast_Implementation()
 void APCH_Base::EnableSpellCasting_Implementation(bool bEnableFire)
 {
 	IPCH_Interface::EnableSpellCasting_Implementation(bEnableFire);
-	bCanfire=bEnableFire;
+	bCanFire=bEnableFire;
+}
+
+void APCH_Base::AddHealthFromPickup_Implementation(float val)
+{
+	IPCH_Interface::AddHealthFromPickup_Implementation(val);
+
+	Health->AddHealth(val);
+}
+
+void APCH_Base::AddSpellFromPickup_Implementation(TSubclassOf<ASpellBase> Spell)
+{
+	IPCH_Interface::AddSpellFromPickup_Implementation(Spell);
+
+	InventoryComp->AddSpell(Spell);
 }
 
 void APCH_Base::PlayerDeath()
@@ -155,24 +179,56 @@ void APCH_Base::AttachSpell()
 {
 	if (!SpellWeapon)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "No spell class assigned");
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "No spell class or inventory assigned");
 		return;
 	}
 
-	FActorSpawnParameters SpawnParams;
-	SpawnParams.Owner=this;
-	SpawnParams.Instigator=GetInstigator();
+	TSubclassOf<ASpellBase> SpellClass = InventoryComp->GetCurrentSpell();
+	if (!SpellClass)
+		return;
 
-	EquippedSpell=GetWorld()->SpawnActor<ASpellBase>(SpellWeapon,FVector::ZeroVector,FRotator::ZeroRotator, SpawnParams);
+	if (EquippedSpell)
+	{
+		EquippedSpell->SetActorHiddenInGame(true);
+		EquippedSpell->SetActorEnableCollision(false);
+	}
 
-	if (!EquippedSpell)
+	ASpellBase* CachedSpell = nullptr;
+
+	if (SpawnedSpells.Contains(SpellClass))
+	{
+		CachedSpell = SpawnedSpells[SpellClass];//uses the spell class like a key to access the value in the map
+	}
+	else
+	{
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.Owner=this;
+		SpawnParams.Instigator=GetInstigator();
+
+		CachedSpell=GetWorld()->SpawnActor<ASpellBase>(SpellClass,FVector::ZeroVector,FRotator::ZeroRotator, SpawnParams);
+
+		if (CachedSpell)
+		{
+			const FName AttachmentSocketName = FName("SpellSocket");
+			CachedSpell->AttachToComponent(SkeletalMesh,FAttachmentTransformRules::SnapToTargetIncludingScale,AttachmentSocketName);
+		}
+	}
+
+	if (CachedSpell)
+	{
+		EquippedSpell=CachedSpell;
+		EquippedSpell->SetActorHiddenInGame(false);
+		EquippedSpell->SetActorEnableCollision(true);
+	}
+	
+	/*if (!EquippedSpell)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "No spell class assigned");
 		return;
 	}
 
 	const FName AttachmentSocketName = FName("SpellSocket");
-	EquippedSpell->AttachToComponent(SkeletalMesh,FAttachmentTransformRules::SnapToTargetIncludingScale,AttachmentSocketName);
+	EquippedSpell->AttachToComponent(SkeletalMesh,FAttachmentTransformRules::SnapToTargetIncludingScale,AttachmentSocketName);*/
 }
 
 // Called to bind functionality to input
@@ -189,12 +245,28 @@ void APCH_Base::Fire_Implementation(const FInputActionInstance& Instance)
 	{
 		return;
 	}
-	if (bCanfire)
+	if (bCanFire)
 	{
-		bCanfire = false;
+		bCanFire = false;
 		IPCH_Anim_Interface::Execute_PlaySpellCastAnimation(AnimInstance, true);
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "FIRE");
 	}
+}
+
+void APCH_Base::Scroll_Implementation(const FInputActionInstance& Instance)
+{
+	IIA_Interface::Scroll_Implementation(Instance);
+
+	float ScrolledValue = Instance.GetValue().Get<float>();//gets the float value from the entire set of values
+	UE_LOG(LogTemp, Warning, TEXT("AHHHHHHHHHHHHHHHHHHHHHHHH %f"), ScrolledValue);
+	if (InventoryComp)
+	{
+		if (ScrolledValue>0)
+			InventoryComp->NextSpell();
+		if (ScrolledValue<0)
+			InventoryComp->PreviousSpell();
+	}
+		
 }
 
 

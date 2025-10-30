@@ -6,7 +6,7 @@
 #include "Components/ArrowComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "NiagaraFunctionLibrary.h"
-#include "GamJam25/Managers/TurretWorldManager.h"
+#include "GamJam25/Private/Managers/TurretWorldManager.h"
 
 
 // Sets default values

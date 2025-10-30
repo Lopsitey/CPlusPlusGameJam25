@@ -35,6 +35,7 @@ public:
 	void Jump(const FInputActionInstance& Instance);
 	void Action(const FInputActionInstance& Instance);
 	void Fire(const FInputActionInstance& Instance);
+	void Scroll(const FInputActionInstance& Instance);
 
 private:
 	UFUNCTION()
