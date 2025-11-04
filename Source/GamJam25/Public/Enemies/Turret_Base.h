@@ -61,6 +61,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "TurretData")
 	void SetTurretEnabled(bool bEnabled);
 
+	UPROPERTY(EditDefaultsOnly, Category="TurretData")
+	float ProjectileDamageOverride = 15.0f;
+
 private:
 	bool bTurretIsEnabled = true;
 };

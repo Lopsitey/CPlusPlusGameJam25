@@ -26,6 +26,7 @@ protected:
 
 	virtual void SpellCast_Implementation() override;
 	virtual void SpawnProjectile_Implementation() override;
+	virtual FTransform GetProjectileTransform() override;
 
 public:
 	// Called every frame

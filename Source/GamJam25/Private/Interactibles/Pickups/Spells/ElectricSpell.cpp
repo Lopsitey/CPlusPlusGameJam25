@@ -41,11 +41,6 @@ void AElectricSpell::SpellCast_Implementation()
 void AElectricSpell::SpawnProjectile_Implementation()
 {
 	Super::SpawnProjectile_Implementation();
-	
-	FVector location = FirePoint->GetComponentLocation();
-	FRotator rotation = FirePoint->GetComponentRotation();
-
-	GetWorld()->SpawnActor(ProjectileClass, &location, &rotation);
 
 	ModifyAmmo(1);
 	CurrentBurst++;
@@ -56,8 +51,19 @@ void AElectricSpell::SpawnProjectile_Implementation()
 	else
 	{
 		GetWorld()->GetTimerManager().SetTimer(BurstTimer,this,
-			&AElectricSpell::SpawnProjectile,0.03,false);
+			&AElectricSpell::SpawnProjectile,0.05,false);
 	}
+}
+
+FTransform AElectricSpell::GetProjectileTransform()
+{
+	if (FirePoint)
+	{
+		FVector location = FirePoint->GetComponentLocation();
+		FRotator rotation = FirePoint->GetComponentRotation();
+		return FTransform(rotation,location);
+	}
+	return Super::GetProjectileTransform();
 }
 
 // Called every frame

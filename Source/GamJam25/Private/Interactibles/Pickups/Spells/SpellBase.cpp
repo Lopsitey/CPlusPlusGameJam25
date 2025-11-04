@@ -3,6 +3,8 @@
 
 #include "Interactibles/Pickups/Spells/SpellBase.h"
 
+#include "Enemies/Projectile_Base.h"
+
 
 // Sets default values
 ASpellBase::ASpellBase()
@@ -38,6 +40,10 @@ void ASpellBase::BeginPlay()
 
 void ASpellBase::SpawnProjectile_Implementation()
 {
+	FTransform SpawnTransform = GetProjectileTransform();
+
+	AProjectile_Base* Projectile = GetWorld()->SpawnActor<AProjectile_Base>(ProjectileClass, SpawnTransform.GetLocation(), SpawnTransform.GetRotation().Rotator());
+	Projectile->SetIgnoredActors(this,GetOwner());
 }
 
 void ASpellBase::ModifyAmmo_Implementation(uint8 ToReduce)
@@ -60,6 +66,11 @@ void ASpellBase::HandleEmpty_Implementation()
 	{
 		//TODO - reload anim or SFX / VFX 
 	}
+}
+
+FTransform ASpellBase::GetProjectileTransform()
+{
+	return FTransform(GetActorRotation(),GetActorLocation());
 }
 
 // Called every frame

@@ -50,11 +50,19 @@ void UHealthComponent::OnDamaged(AActor* DamagedActor, float Damage, const class
 				OnDeath.Broadcast();
 		}
 	}
+	BroadcastChange();
 }
 
 void UHealthComponent::AddHealth(float health)
 {
 	CurrentHealth=FMath::Clamp(CurrentHealth+CurrentHealth, 0.f, MaxHealth);
 	UE_LOG(LogTemp,Warning,TEXT("Health: %f"),CurrentHealth);
+	BroadcastChange();
+}
+
+void UHealthComponent::BroadcastChange()
+{
+	if (UpdateHealth.IsBound())
+		UpdateHealth.Broadcast(CurrentHealth);
 }
 

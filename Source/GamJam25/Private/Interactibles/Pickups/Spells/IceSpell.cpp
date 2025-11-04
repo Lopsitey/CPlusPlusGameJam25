@@ -43,11 +43,17 @@ void AIceSpell::SpellCast_Implementation()
 void AIceSpell::SpawnProjectile_Implementation()
 {
 	Super::SpawnProjectile_Implementation();
+}
 
-	FVector location= FirePoint->GetComponentLocation();
-	FRotator rotation= FirePoint->GetComponentRotation();
-
-	GetWorld()->SpawnActor(ProjectileClass, &location, &rotation);
+FTransform AIceSpell::GetProjectileTransform()
+{
+	if (FirePoint)
+	{
+		FVector location= FirePoint->GetComponentLocation();
+		FRotator rotation= FirePoint->GetComponentRotation();
+		return FTransform(rotation,location);
+	}
+	return Super::GetProjectileTransform();
 }
 
 // Called every frame

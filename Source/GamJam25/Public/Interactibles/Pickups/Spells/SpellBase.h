@@ -60,6 +60,8 @@ protected:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category="Spell Base Data")
 	void HandleEmpty();
+
+	virtual FTransform GetProjectileTransform();//gets the projectile spawn transform
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

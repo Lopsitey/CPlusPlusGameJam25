@@ -57,11 +57,17 @@ void AFireSpell::SpellCast_Implementation()
 void AFireSpell::SpawnProjectile_Implementation()
 {
 	Super::SpawnProjectile_Implementation();
+}
 
-	FVector location = FirePoints[ActiveFirePoint]->GetComponentLocation();
-	FRotator rotation = FirePoints[ActiveFirePoint]->GetComponentRotation();
-	
-	GetWorld()->SpawnActor(ProjectileClass, &location, &rotation);
+FTransform AFireSpell::GetProjectileTransform()
+{
+	if (!FirePoints.IsEmpty())
+	{
+		FVector location = FirePoints[ActiveFirePoint]->GetComponentLocation();
+		FRotator rotation = FirePoints[ActiveFirePoint]->GetComponentRotation();
+		return FTransform(rotation,location);
+	}
+	return Super::GetProjectileTransform();
 }
 
 // Called every frame
