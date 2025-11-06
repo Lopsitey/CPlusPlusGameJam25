@@ -31,6 +31,10 @@ void APC_Base::BeginPlay()
 		GM->OnUpdateCollectibles.AddUniqueDynamic(this, &APC_Base::UpdateScore);
 		GM->CollectiblesComplete.AddUniqueDynamic(this, &APC_Base::GameWin);
 	}
+
+	FInputModeGameOnly GameInputMode;//Only resets to the gameplay input mode from the MainMenu
+	SetInputMode(GameInputMode);
+	bShowMouseCursor = false;
 }
 
 void APC_Base::SetupInputComponent()

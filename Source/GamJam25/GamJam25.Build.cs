@@ -9,7 +9,7 @@ public class GamJam25 : ModuleRules
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
 		PublicDependencyModuleNames.AddRange(new string[]
-			{ "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "Niagara", "UMG"
+			{ "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "Niagara", "UMG", "UnrealEd"
 			});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
