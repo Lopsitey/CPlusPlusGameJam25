@@ -23,8 +23,8 @@ void UMainMenu::NativeConstruct()
 		if (MenuStyle&&!QuitButton->MenuStyleData)
 			QuitButton->MenuStyleData = MenuStyle;
 		
-		QuitButton->Label=NSLOCTEXT("Menu", "PlayButton", "Play");
-		QuitButton->OnButtonClicked.AddDynamic(this, &UMainMenu::HandlePlay);
+		QuitButton->Label=NSLOCTEXT("Menu", "QuitButton", "Quit");
+		QuitButton->OnButtonClicked.AddDynamic(this, &UMainMenu::HandleQuit);
 	}
 }
 

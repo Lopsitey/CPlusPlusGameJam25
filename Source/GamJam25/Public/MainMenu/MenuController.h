@@ -17,8 +17,8 @@ class GAMJAM25_API AMenuController : public APlayerController
 	GENERATED_BODY()
 
 public:
-	virtual void BeginPlay();
-	virtual void BeginDestroy();
+	virtual void BeginPlay() override;
+	virtual void BeginDestroy() override;
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category=UI)

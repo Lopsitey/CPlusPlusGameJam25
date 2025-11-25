@@ -21,10 +21,6 @@ void APC_Base::BeginPlay()
 			Subsystem->AddMappingContext(MappingContext, 0);
 		}
 	}
-	if (GetPawn())
-	{
-		LocalPCH = GetPawn();
-	}
 
 	if (AMy_GM* GM = Cast<AMy_GM>(GetWorld()->GetAuthGameMode()))
 	{

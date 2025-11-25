@@ -52,8 +52,10 @@ private:
 	void UpdateScore(uint8 score);
 	
 	UFUNCTION()
+    	void UpdateHealth(float NewHealth);
+	
+	UFUNCTION()
 	void GameWin();
 
-	UFUNCTION()
-	void UpdateHealth(float NewHealth);
+	
 };

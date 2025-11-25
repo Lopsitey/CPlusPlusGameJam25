@@ -32,4 +32,6 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "MenuStyleSheet|Flow")
 	TSoftObjectPtr<UWorld> Gameplaylevel;
+	
+	//could extend this for future levels or menus and stuff
 };

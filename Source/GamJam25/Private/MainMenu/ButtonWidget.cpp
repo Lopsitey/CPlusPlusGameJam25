@@ -26,7 +26,7 @@ void UButtonWidget::NativePreConstruct()
 		WB_Button->SetStyle(Style);
 	}
 
-	if (WB_SizeBox && MenuStyleData)
+	if (WB_SizeBox)
 	{
 		WB_SizeBox->SetWidthOverride((MenuStyleData->ButtonSize.X));
 		WB_SizeBox->SetHeightOverride((MenuStyleData->ButtonSize.Y));
