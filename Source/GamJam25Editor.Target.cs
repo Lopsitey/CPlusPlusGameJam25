@@ -15,7 +15,6 @@ public class GamJam25EditorTarget : TargetRules
 		// ---- Build speed helpers (Editor only) ----
 		bUseFastPDBLinking         = true;
 		bUsePCHFiles               = true;// keep a PCH so most headers come precompiled
-		MinFilesUsingPrecompiledHeader = 1;
 
 		bUseUnityBuild             = true;// compiles in chunks
 		bUseAdaptiveUnityBuild     = true;// only de-unify files that change often

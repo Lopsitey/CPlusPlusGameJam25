@@ -15,6 +15,5 @@ public class GamJam25Target : TargetRules
 		// Build-speed helpers
 		bUseFastPDBLinking = true;
 		bUsePCHFiles = true;
-		MinFilesUsingPrecompiledHeader = 1;
 	}
 }
