@@ -5,7 +5,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 #include "My_GM.h"
-#include "GamJam25/PCH/Inputs/IADataConfig.h"
+#include "GamJam25/Public/PCH/Inputs/IADataConfig.h"
 #include "GamJam25/Public/PCH/Inputs/IA_Interface.h"
 
 void APC_Base::BeginPlay()
@@ -19,10 +19,8 @@ void APC_Base::BeginPlay()
 			Subsystem->AddMappingContext(MappingContext,0);
 		}
 	}
-	if (GetPawn())
-	{
+	
 		LocalPCH = GetPawn();	
-	}
 
 	if (AMy_GM* GM = Cast<AMy_GM>(GetWorld()->GetAuthGameMode()))
 	{
