@@ -11,5 +11,10 @@ public class GamJam25Target : TargetRules
 		DefaultBuildSettings = BuildSettingsVersion.V5;
 		IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_6;
 		ExtraModuleNames.Add("GamJam25");
+		
+		// Build-speed helpers
+		bUseFastPDBLinking = true;
+		bUsePCHFiles = true;
+		MinFilesUsingPrecompiledHeader = 1;
 	}
 }

@@ -29,10 +29,11 @@ ACollectibleBase::ACollectibleBase()
 void ACollectibleBase::BeginPlay()
 {
 	Super::BeginPlay();
-	UCollectiblesManager* Manager = GetWorld()->GetSubsystem<UCollectiblesManager>();
-	if (Manager)
+	
+	if (UCollectiblesManager* Manager = GetWorld()->GetSubsystem<UCollectiblesManager>())
 	{
 		Manager->RegisterCollectible(this);
+		
 		FTimerHandle TimerHandle;
 		GetWorld()->GetTimerManager().SetTimer(TimerHandle, [this, Manager]()
 		{
@@ -51,7 +52,7 @@ void ACollectibleBase::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActo
 		Manager->NotifyCollection(this);
 		if (PickupSound)
 			UGameplayStatics::PlaySoundAtLocation(GetWorld(), PickupSound, GetActorLocation());
-
+			//this works like a one-shot sound in Unity
 		Destroy();
 	}
 }
