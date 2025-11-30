@@ -3,10 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Interactibles/Pickups/CollectibleBase.h"
 #include "Subsystems/WorldSubsystem.h"
 #include "CollectiblesManager.generated.h"
 
+class ACollectibleBase;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCollectionEvent);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAllCollectiblesRegistered,uint8, INumOfCollectibles);
 
@@ -34,7 +34,7 @@ public:
 
 private:
 	UPROPERTY()
-	TArray<TWeakObjectPtr<ACollectibleBase>> Collectibles;
+	TArray<TWeakObjectPtr<ACollectibleBase>> Collectibles;//used because the objects might get destroyed
 
 	bool bRegistrationComplete = false;
 };
