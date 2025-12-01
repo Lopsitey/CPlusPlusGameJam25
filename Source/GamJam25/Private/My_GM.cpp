@@ -27,10 +27,8 @@ void AMy_GM::SetNumOfCoinsRequired(uint8 MaxCoins)
 
 void AMy_GM::LogCollectible()
 {
-	//++CurrentNumOfCoins;
-
 	if (OnUpdateCollectibles.IsBound())
-		OnUpdateCollectibles.Broadcast(++CurrentNumOfCoins);
+		OnUpdateCollectibles.Broadcast(++CurrentNumOfCoins);//inline interation
 
 	if (CurrentNumOfCoins == NumberOfRequiredCollectibles)
 	{

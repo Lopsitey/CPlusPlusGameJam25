@@ -246,7 +246,7 @@ void APCH_Base::Scroll_Implementation(const FInputActionInstance& Instance)
 
 	float ScrolledValue = Instance.GetValue().Get<float>();//gets the float value from the entire set of values
 	UE_LOG(LogTemp, Warning, TEXT("AHHHHHHHHHHHHHHHHHHHHHHHH %f"), ScrolledValue);
-	/*
+	
 	if (InventoryComp)
 	{
 		if (ScrolledValue>0)
@@ -254,7 +254,6 @@ void APCH_Base::Scroll_Implementation(const FInputActionInstance& Instance)
 		if (ScrolledValue<0)
 			InventoryComp->PreviousSpell();
 	}
-	*/	
 }
 
 
