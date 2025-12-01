@@ -4,12 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "PCH/HealthInterface.h"
 #include "HealthComponent.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDeathEvent);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnHealthChanged, float, NewHealth);
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
-class GAMJAM25_API UHealthComponent : public UActorComponent
+class GAMJAM25_API UHealthComponent : public UActorComponent, public IHealthInterface
 {
 	GENERATED_BODY()
 
@@ -38,4 +40,14 @@ public:
 	UFUNCTION()
 	void OnDamaged(AActor* DamagedActor, float Damage, const class UDamageType* DamageType,
 		AController* InstigatedBy, AActor* DamageCauser);
+
+	void AddHealth(float health);
+
+	UPROPERTY()
+	FOnHealthChanged UpdateHealth;
+
+	void BroadcastChange();
+
+	virtual float GetMaxHealth() const override{return MaxHealth;}
+	virtual FOnHealthChanged& GetHealthChangedDelegate() override{return UpdateHealth;}
 };

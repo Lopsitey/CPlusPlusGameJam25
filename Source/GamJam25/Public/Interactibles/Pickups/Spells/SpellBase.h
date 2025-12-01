@@ -24,7 +24,13 @@ public:
 	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category="Spell Base Data")
 	void Charge();//reload
-
+	
+	UFUNCTION(BlueprintNativeEvent, Category="Spell Base Data")
+	uint8 GetTotalAmmo();//returns the total ammo the spell is holding
+	
+	UFUNCTION(BlueprintNativeEvent, Category="Spell Base Data")
+	void SetAmmo(uint8 ammo);//sets the starting ammo for the spell - good if the spell has been swapped to after partial use
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -44,6 +50,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Spell Base Data")
 	bool bAllowedAutoReload = true;
 	
+	UFUNCTION(BlueprintNativeEvent, Category="Spell Base Data")
+	bool HasAmmo();//returns true if Ihave any ammo left
+	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Spell Base Data")
 	TSubclassOf<AProjectile_Base> ProjectileClass;
 	//can also be TSubclassOf<class AProjectile_Base> ProjectileClass; if I want to inline forward-delcare
@@ -52,10 +61,7 @@ protected:
 	void SpawnProjectile();
 	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category="Spell Base Data")
-	void ModifyAmmo(uint8 mag);
-	
-	UFUNCTION(BlueprintNativeEvent, Category="Spell Base Data")
-	bool HasAmmo();//returns remaining ammunition
+	void ModifyAmmo(uint8 ReductionAmt);
 	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category="Spell Base Data")
 	void HandleEmpty();//for reloading

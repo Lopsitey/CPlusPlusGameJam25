@@ -19,7 +19,10 @@ public:
 	UInventoryComponent();
 
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly, Category="Inventory")
-	TArray<TSubclassOf<ASpellBase>> AvailableSpells;
+	TMap<TSubclassOf<ASpellBase>, uint8> AvailableSpells;
+	
+	UPROPERTY()
+	TArray<TSubclassOf<ASpellBase>> SpellKeys;
 
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly, Category="Inventory")
 	uint8 CurrentSpellIndex=0;
@@ -28,11 +31,21 @@ public:
 	FOnSpellChanged OnSpellChanged;
 
 	void AddSpell(TSubclassOf<ASpellBase> NewSpell);
+	void RemoveSpell(TSubclassOf<ASpellBase> ToRemove);
 	void NextSpell();
 	void PreviousSpell();
 
 	TSubclassOf<ASpellBase> GetCurrentSpell();
 	
+	uint8 GetStoredAmmo(TSubclassOf<ASpellBase> spell);
+	
+	void StoreAmmo(TSubclassOf<ASpellBase> spell, uint8 ammo);
+	
+	bool HasStoredAmmo(TSubclassOf<ASpellBase> Spell) const
+	{
+		return AvailableSpells.Contains(Spell);
+	}
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;

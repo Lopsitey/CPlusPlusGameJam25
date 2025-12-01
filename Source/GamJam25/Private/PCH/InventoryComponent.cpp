@@ -1,7 +1,4 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
-
-
-#include "PCH/InventoryComponent.h"
+﻿#include "PCH/InventoryComponent.h"
 #include "GamJam25/Public/Interactibles/Pickups/Spells/SpellBase.h"
 
 // Sets default values for this component's properties
@@ -16,42 +13,71 @@ UInventoryComponent::UInventoryComponent()
 
 void UInventoryComponent::AddSpell(TSubclassOf<ASpellBase> NewSpell)
 {
-	if (!AvailableSpells.Contains(NewSpell))
+	if (!SpellKeys.Contains(NewSpell))
 	{
-		AvailableSpells.Add(NewSpell);
-		if (AvailableSpells.Num() == 1)
+		SpellKeys.Add(NewSpell);
+
+		if (!AvailableSpells.Contains(NewSpell))
 		{
-			CurrentSpellIndex=0;
+			AvailableSpells.Add(NewSpell);
+		}
+		
+		if (SpellKeys.Num() == 1)
+		{
+			CurrentSpellIndex = 0;
 			OnSpellChanged.Broadcast();
 		}
 	}
 }
 
-void UInventoryComponent::NextSpell()
+void UInventoryComponent::RemoveSpell(TSubclassOf<ASpellBase> ToRemove)
 {
-	if (AvailableSpells.Num() == 0)
+	if (!AvailableSpells.Contains(ToRemove))
 		return;
 
-	CurrentSpellIndex = (CurrentSpellIndex+1)%AvailableSpells.Num();//caps it at less than the amount of spells you have
+	AvailableSpells.Remove(ToRemove);
+	SpellKeys.Remove(ToRemove);
+
+	if (SpellKeys.Num() == 0) //prevents trying to divide by 0 if you remove your final spell
+		return;
+	CurrentSpellIndex = ((CurrentSpellIndex - 1) + SpellKeys.Num()) % SpellKeys.Num();
+}
+
+void UInventoryComponent::NextSpell()
+{
+	if (SpellKeys.Num() == 0)
+		return;
+	CurrentSpellIndex = (CurrentSpellIndex + 1) % SpellKeys.Num(); //caps it at less than the amount of spells you have
 	OnSpellChanged.Broadcast();
 }
 
 void UInventoryComponent::PreviousSpell()
 {
-	if (AvailableSpells.Num() == 0)
+	if (SpellKeys.Num() == 0)
 		return;
 
-	CurrentSpellIndex=((CurrentSpellIndex-1)+AvailableSpells.Num())%AvailableSpells.Num();
+	CurrentSpellIndex = ((CurrentSpellIndex - 1) + SpellKeys.Num()) % SpellKeys.Num();
 	OnSpellChanged.Broadcast();
 }
 
 TSubclassOf<ASpellBase> UInventoryComponent::GetCurrentSpell()
 {
-	if (AvailableSpells.IsValidIndex(CurrentSpellIndex))
-		return AvailableSpells[CurrentSpellIndex];
-	
+	if (SpellKeys.IsValidIndex(CurrentSpellIndex))
+		return SpellKeys[CurrentSpellIndex];
+
 	return nullptr;
 }
+
+uint8 UInventoryComponent::GetStoredAmmo(TSubclassOf<ASpellBase> spell)
+{
+	return AvailableSpells.Contains(spell) ? AvailableSpells[spell] : 0;
+}
+
+void UInventoryComponent::StoreAmmo(TSubclassOf<ASpellBase> spell, uint8 ammo)
+{
+	AvailableSpells.FindOrAdd(spell) = ammo;
+}
+
 
 // Called when the game starts
 void UInventoryComponent::BeginPlay()
@@ -59,7 +85,6 @@ void UInventoryComponent::BeginPlay()
 	Super::BeginPlay();
 
 	// ...
-	
 }
 
 
@@ -69,4 +94,3 @@ void UInventoryComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 }
-
