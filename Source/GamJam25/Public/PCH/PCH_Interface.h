@@ -22,6 +22,18 @@ class GAMJAM25_API IPCH_Interface
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
-    UFUNCTION(BlueprintCallable,BlueprintNativeEvent, Category=PlayerInterface)
+    UFUNCTION(BlueprintCallable,BlueprintNativeEvent)
     void SetOverlappedActor(AActor* OverlappedActor);
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void SpellCast();
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void EnableSpellCasting(bool bEnableFire);
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void AddHealthFromPickup(float val);
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void AddSpellFromPickup(TSubclassOf<ASpellBase> Spell);
 };

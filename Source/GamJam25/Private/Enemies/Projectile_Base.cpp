@@ -54,3 +54,13 @@ void AProjectile_Base::ProjectileHit(UPrimitiveComponent* HitComponent, AActor* 
 	//TODO VFX on hit!!!
 	Destroy();
 }
+
+void AProjectile_Base::SetIgnoredActors(AActor* InOwningWeapon, AActor* InOwningPawn)
+{
+
+	if (InOwningWeapon)
+		SphereComponent->IgnoreActorWhenMoving(InOwningWeapon, true);
+	if (InOwningPawn)
+		SphereComponent->IgnoreActorWhenMoving(InOwningPawn, true);
+	
+}
