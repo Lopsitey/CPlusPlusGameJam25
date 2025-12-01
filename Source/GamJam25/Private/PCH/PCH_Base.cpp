@@ -67,6 +67,9 @@ void APCH_Base::BeginPlay()
 	{
 		InventoryComp->OnSpellChanged.AddUniqueDynamic(this, &APCH_Base::AttachSpell);
 		//binds the AttachSpell function to the event
+		ASpellBase* spellRef = SpellWeapon.GetDefaultObject();
+		InventoryComp->StoreAmmo(SpellWeapon, spellRef->GetMaxAmmo());//initialises it with ammo
+		
 		InventoryComp->AddSpell(SpellWeapon);
 	}
 
@@ -160,6 +163,10 @@ void APCH_Base::AddSpellFromPickup_Implementation(TSubclassOf<ASpellBase> Spell)
 {
 	IPCH_Interface::AddSpellFromPickup_Implementation(Spell);
 
+	ASpellBase* baseSpell = Spell.GetDefaultObject();
+	//adds the pickup ammo to the current ammo
+	InventoryComp->StoreAmmo(Spell, InventoryComp->GetStoredAmmo(Spell) + baseSpell->GetMaxAmmo());
+	
 	InventoryComp->AddSpell(Spell);
 }
 
@@ -189,7 +196,6 @@ void APCH_Base::AttachSpell() //called every time a change in the inventory occu
 	}
 
 	ASpellBase* CachedSpell = nullptr;
-
 	if (SpawnedSpells.Contains(SpellClass)) //if we already have a spell we can use
 	{
 		//works like an object pool so we aren't constantly destroying and respawning the spells
@@ -203,18 +209,14 @@ void APCH_Base::AttachSpell() //called every time a change in the inventory occu
 
 		CachedSpell = GetWorld()->SpawnActor<ASpellBase>(SpellClass, FVector::ZeroVector, FRotator::ZeroRotator,
 		                                                 SpawnParams);
-		
-		SpawnedSpells.Add(SpellClass, CachedSpell);//keep track of everything spawned
 
 		if (!CachedSpell)
 			return;
 		
-		//Only copies ammo if had previously equipped a spell
-		if (!InventoryComp->HasStoredAmmo(SpellClass))
-			CachedSpell->SetAmmo(InventoryComp->GetStoredAmmo(SpellClass));//Restores old ammo
-		else
-			InventoryComp->StoreAmmo(SpellClass, CachedSpell->GetTotalAmmo());//Uses defaults
-
+		
+		SpawnedSpells.Add(SpellClass, CachedSpell); //keep track of everything spawned
+		CachedSpell->InvComp = InventoryComp;//sets the inventory component for the spell using deferred spawn
+		
 		const FName AttachmentSocketName = FName("SpellSocket");
 		CachedSpell->AttachToComponent(SkeletalMesh, FAttachmentTransformRules::SnapToTargetIncludingScale,
 		                               AttachmentSocketName);
@@ -222,6 +224,7 @@ void APCH_Base::AttachSpell() //called every time a change in the inventory occu
 
 	if (CachedSpell)
 	{
+		CachedSpell->SetAmmo(InventoryComp->GetStoredAmmo(SpellClass));
 		EquippedSpell = CachedSpell;
 		EquippedSpell->SetActorHiddenInGame(false);
 		EquippedSpell->SetActorEnableCollision(true);
@@ -253,18 +256,15 @@ void APCH_Base::Scroll_Implementation(const FInputActionInstance& Instance)
 	IIA_Interface::Scroll_Implementation(Instance);
 
 	float ScrolledValue = Instance.GetValue().Get<float>(); //gets the float value from the entire set of values
-	if (InventoryComp)
+	if (!InventoryComp)
+		return;
+	
+	if (ScrolledValue > 0.f)
 	{
-		//prevents you from being able to switch back to an empty spell 
-		if (EquippedSpell && (!EquippedSpell->GetTotalAmmo() == 0))
-		{
-			//removes the spell if it is out of ammo
-			InventoryComp->RemoveSpell(SpellWeapon);
-		}
-
-		if (ScrolledValue > 0)
-			InventoryComp->NextSpell();
-		if (ScrolledValue < 0)
-			InventoryComp->PreviousSpell();
+		InventoryComp->TryScroll(+1);
+	}
+	else if (ScrolledValue < 0.f)
+	{
+		InventoryComp->TryScroll(-1);
 	}
 }

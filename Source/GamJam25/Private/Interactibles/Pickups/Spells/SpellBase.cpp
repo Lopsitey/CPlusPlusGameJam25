@@ -58,6 +58,20 @@ void ASpellBase::SpawnProjectile_Implementation()
 void ASpellBase::ModifyAmmo_Implementation(uint8 ReductionAmt)
 {
 	CurrentAmmo = FMath::Clamp(CurrentAmmo - ReductionAmt, 0, MaxAmmo);
+
+	// Notifies the owner's inventory so the map stays in sync
+	if (AActor* O = GetOwner())
+	{
+		if (APawn* P = Cast<APawn>(O))
+		{
+			InvComp->StoreAmmo(GetClass(), GetTotalAmmo()); // update map
+			//Auto-removes spell if no ammo left
+			if (InvComp->GetStoredAmmo(GetClass()) == 0)
+			{
+				InvComp->RemoveSpell(GetClass());
+			}
+		}
+	}
 }
 
 void ASpellBase::HandleEmpty_Implementation()
