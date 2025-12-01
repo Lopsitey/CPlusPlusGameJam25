@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "PCH/InventoryComponent.h"
 #include "SpellBase.generated.h"
 
 class AProjectile_Base;// you should make things blueprintable if they don't already inherit from AActor - this is just an example usage, but it doesn't actually need it
@@ -31,6 +32,11 @@ public:
 	UFUNCTION(BlueprintNativeEvent, Category="Spell Base Data")
 	void SetAmmo(uint8 ammo);//sets the starting ammo for the spell - good if the spell has been swapped to after partial use
 	
+	UFUNCTION(BlueprintNativeEvent, Category="Spell Base Data")
+	uint8 GetMaxAmmo();
+	
+	UPROPERTY(BlueprintReadWrite, meta=(ExposeOnSpawn = true), Category="Spell Base Data")
+	UInventoryComponent* InvComp;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -51,11 +57,11 @@ protected:
 	bool bAllowedAutoReload = true;
 	
 	UFUNCTION(BlueprintNativeEvent, Category="Spell Base Data")
-	bool HasAmmo();//returns true if Ihave any ammo left
+	bool HasAmmo();//returns true if I have any ammo left
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Spell Base Data")
 	TSubclassOf<AProjectile_Base> ProjectileClass;
-	//can also be TSubclassOf<class AProjectile_Base> ProjectileClass; if I want to inline forward-delcare
+	//can also be TSubclassOf<class AProjectile_Base> ProjectileClass; if I want to inline forward-declare
 	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category="Spell Base Data")
 	void SpawnProjectile();
@@ -75,4 +81,9 @@ public:
 inline bool ASpellBase::HasAmmo_Implementation()
 {
 	return CurrentAmmo>0;
+}
+
+inline uint8 ASpellBase::GetMaxAmmo_Implementation()
+{
+	return MaxAmmo;
 }
