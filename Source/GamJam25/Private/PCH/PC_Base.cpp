@@ -39,6 +39,8 @@ void APC_Base::SetupInputComponent()
 		PEI->BindAction(InputActions->Look.LoadSynchronous(),ETriggerEvent::Triggered, this, &APC_Base::Look);
 		PEI->BindAction(InputActions->Jump.LoadSynchronous(),ETriggerEvent::Triggered, this, &APC_Base::Jump);
 		PEI->BindAction(InputActions->Action.LoadSynchronous(),ETriggerEvent::Triggered, this, &APC_Base::Action);
+		PEI->BindAction(InputActions->Fire.LoadSynchronous(), ETriggerEvent::Triggered, this, &APC_Base::Fire);
+		PEI->BindAction(InputActions->Scroll.LoadSynchronous(), ETriggerEvent::Triggered, this, &APC_Base::Scroll);
 	}
 }
 
@@ -62,13 +64,30 @@ void APC_Base::Action(const FInputActionInstance& Instance)
 	IIA_Interface::Execute_Action(LocalPCH,Instance);
 }
 
+void APC_Base::Fire(const FInputActionInstance& Instance)
+{
+	IIA_Interface::Execute_Fire(LocalPCH, Instance);
+}
+
+void APC_Base::Scroll(const FInputActionInstance& Instance)
+{
+	IIA_Interface::Execute_Scroll(LocalPCH, Instance);
+}
+
 void APC_Base::UpdateScore(uint8 score)
 {
-	GEngine->AddOnScreenDebugMessage(-1,20.f,FColor::Blue, FString::Printf(TEXT("Score: %d"), score));
-	//for printing types which aren't string 
+	GEngine->AddOnScreenDebugMessage(-1, 20.f, FColor::Blue, FString::Printf(TEXT("Score: %d"), score));
+	//for printing types which aren't string
+
+	//ActiveHUD->OnScoreChanged(score);
 }
 
 void APC_Base::GameWin()
 {
 	GEngine->AddOnScreenDebugMessage(-1,20.f,FColor::Green, TEXT("You Win!"));
+}
+
+void APC_Base::UpdateHealth(float NewHealth)
+{
+	//ActiveHUD->OnHealthChanged(NewHealth);
 }

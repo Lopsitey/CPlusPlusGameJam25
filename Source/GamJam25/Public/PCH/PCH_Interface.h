@@ -24,4 +24,16 @@ class GAMJAM25_API IPCH_Interface
 public:
     UFUNCTION(BlueprintCallable,BlueprintNativeEvent, Category=PlayerInterface)
     void SetOverlappedActor(AActor* OverlappedActor);
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void SpellCast();
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void EnableSpellCasting(bool bEnableFire);
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void AddHealthFromPickup(float val);
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void AddSpellFromPickup(TSubclassOf<ASpellBase> Spell);
 };
