@@ -24,6 +24,7 @@ APCH_Base::APCH_Base()
 	Camera->SetupAttachment(SpringArm);
 
 	Health=CreateDefaultSubobject<UHealthComponent>("Health");
+	InventoryComp = CreateDefaultSubobject<UInventoryComponent>("Inventory");
 
 	bUseControllerRotationYaw = true;
 	bUseControllerRotationPitch = false;
@@ -185,10 +186,6 @@ void APCH_Base::AttachSpell()
 	{
 		EquippedSpell->SetActorHiddenInGame(true);
 		EquippedSpell->SetActorEnableCollision(false);
-	}
-	else
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "Failed to spawn spell");
 	}
 
 	ASpellBase* CachedSpell = nullptr;
