@@ -165,7 +165,7 @@ void APCH_Base::AddSpellFromPickup_Implementation(TSubclassOf<ASpellBase> Spell)
 
 	ASpellBase* baseSpell = Spell.GetDefaultObject();
 	//adds the pickup ammo to the current ammo
-	InventoryComp->StoreAmmo(Spell, InventoryComp->GetStoredAmmo(Spell) + baseSpell->GetMaxAmmo());
+	InventoryComp->StoreAmmo(Spell, InventoryComp->GetStoredAmmo(Spell) + baseSpell->GetMaxAmmo());//todo need type checking so not all pickups give ammo 
 	
 	InventoryComp->AddSpell(Spell);
 }

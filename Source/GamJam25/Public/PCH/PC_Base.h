@@ -7,6 +7,7 @@
 #include "InputMappingContext.h"
 #include "PC_Base.generated.h"
 
+class UPlayerHUD;
 class UIADataConfig;
 /**
  * 
@@ -19,6 +20,15 @@ class GAMJAM25_API APC_Base : public APlayerController
 protected:
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;
+
+	virtual void OnPossess(APawn* InPawn) override;
+	virtual void OnUnPossess() override;
+
+	UPROPERTY(EditDefaultsOnly, Category="PlayerHUD")
+	TSubclassOf<UPlayerHUD> HUDClass;
+
+	UPROPERTY()
+	TObjectPtr<UPlayerHUD> ActiveHUD;
 
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Input)

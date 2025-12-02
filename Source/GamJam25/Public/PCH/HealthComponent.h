@@ -28,10 +28,10 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
 	                           FActorComponentTickFunction* ThisTickFunction) override;
 	
-	UPROPERTY(EditDefaultsOnly);
+	UPROPERTY(EditDefaultsOnly, Category=Health);
 	float MaxHealth = 100.0f;
 
-	UPROPERTY(BlueprintReadOnly);
+	UPROPERTY(BlueprintReadOnly, Category=Health);
 	float CurrentHealth = 0.0f;
 
 	UPROPERTY(BlueprintAssignable,BlueprintCallable, Category=Health);
@@ -46,7 +46,7 @@ public:
 	UPROPERTY()
 	FOnHealthChanged UpdateHealth;
 
-	void BroadcastChange();
+	void BroadcastChange() const;
 
 	virtual float GetMaxHealth() const override{return MaxHealth;}
 	virtual FOnHealthChanged& GetHealthChangedDelegate() override{return UpdateHealth;}

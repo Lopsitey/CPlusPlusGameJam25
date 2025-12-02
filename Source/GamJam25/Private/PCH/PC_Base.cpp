@@ -5,8 +5,12 @@
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 #include "My_GM.h"
+#include "Blueprint/UserWidget.h"
 #include "GamJam25/Public/PCH/Inputs/IADataConfig.h"
 #include "GamJam25/Public/PCH/Inputs/IA_Interface.h"
+#include "PCH/HealthComponent.h"
+#include "PCH/HealthInterface.h"
+#include "PCH/HUD/PlayerHUD.h"
 
 void APC_Base::BeginPlay()
 {
@@ -19,8 +23,6 @@ void APC_Base::BeginPlay()
 			Subsystem->AddMappingContext(MappingContext,0);
 		}
 	}
-	
-		LocalPCH = GetPawn();	
 
 	if (AMy_GM* GM = Cast<AMy_GM>(GetWorld()->GetAuthGameMode()))
 	{
@@ -42,6 +44,42 @@ void APC_Base::SetupInputComponent()
 		PEI->BindAction(InputActions->Fire.LoadSynchronous(), ETriggerEvent::Triggered, this, &APC_Base::Fire);
 		PEI->BindAction(InputActions->Scroll.LoadSynchronous(), ETriggerEvent::Triggered, this, &APC_Base::Scroll);
 	}
+}
+
+void APC_Base::OnPossess(APawn* InPawn)
+{
+	Super::OnPossess(InPawn);
+	LocalPCH = GetPawn();
+
+	if (auto* HealthCompInterface = Cast<
+		IHealthInterface>(InPawn->GetComponentByClass(UHealthComponent::StaticClass())))
+	{
+		auto& HealthDelegate = HealthCompInterface->GetHealthChangedDelegate();
+		HealthDelegate.AddDynamic(this, &APC_Base::UpdateHealth);
+		//add dynamic allows multiple bindings whereas add dynamic unique only allows one
+
+		if (IsLocalController() && HUDClass)
+		{
+			ActiveHUD = CreateWidget<UPlayerHUD>(this, HUDClass);
+			if (ActiveHUD)
+			{
+				ActiveHUD->AddToViewport();
+				ActiveHUD->SetMaxHealth(HealthCompInterface->GetMaxHealth());
+				ActiveHUD->OnScoreChanged(0); //initial score display todo  - may want to store score somewhere
+			}
+		}
+	}
+}
+
+void APC_Base::OnUnPossess()
+{
+	if (auto* HealthCompInterface = Cast<IHealthInterface>(
+		LocalPCH->GetComponentByClass(UHealthComponent::StaticClass())))
+	{
+		HealthCompInterface->GetHealthChangedDelegate().RemoveDynamic(this, &APC_Base::UpdateHealth);
+	}
+
+	Super::OnUnPossess();
 }
 
 void APC_Base::Move(const FInputActionInstance& Instance)
