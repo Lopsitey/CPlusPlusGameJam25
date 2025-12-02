@@ -1,6 +1,4 @@
 ﻿#include "PCH/InventoryComponent.h"
-
-#include "SNegativeActionButton.h"
 #include "GamJam25/Public/Interactibles/Pickups/Spells/SpellBase.h"
 
 // Sets default values for this component's properties
