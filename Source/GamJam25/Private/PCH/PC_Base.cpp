@@ -121,6 +121,7 @@ void APC_Base::Scroll(const FInputActionInstance& Instance)
 void APC_Base::Died()
 {
 	ActiveHUD->OnDeath(true);
+	UE_LOG(LogTemp,Warning,TEXT("Player Died"));
 }
 
 void APC_Base::UpdateScore(uint8 score)
@@ -133,6 +134,7 @@ void APC_Base::GameWin()
 	SetIgnoreLookInput(true);
 	SetIgnoreMoveInput(true);
 	ActiveHUD->OnWin(true);
+	UE_LOG(LogTemp,Warning,TEXT("Game Won"));
 }
 
 void APC_Base::UpdateHealth(float NewHealth)

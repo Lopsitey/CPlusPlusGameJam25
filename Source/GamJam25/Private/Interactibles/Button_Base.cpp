@@ -59,6 +59,7 @@ void AButton_Base::Interact_Implementation()
 			{
 				Manager->DisableAllTurrets();
 				bInteracted = true;
+				
 			}
 		}
 	}
@@ -70,7 +71,7 @@ void AButton_Base::Interact_Implementation()
 			{
 				Manager->EnableAllTurrets();
 				bInteracted = false;
-				
+				UE_LOG(LogTemp,Warning,TEXT("Turrets Enabled"));
 			}
 		}
 	}
