@@ -1,7 +1,7 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "HealthComponent.h"
+#include "PCH/HealthComponent.h"
 
 
 // Sets default values for this component's properties
@@ -50,17 +50,19 @@ void UHealthComponent::OnDamaged(AActor* DamagedActor, float Damage, const class
 				OnDeath.Broadcast();
 		}
 	}
+	
 	BroadcastChange();
 }
 
 void UHealthComponent::AddHealth(float health)
 {
-	CurrentHealth=FMath::Clamp(CurrentHealth+CurrentHealth, 0.0f, MaxHealth);
+	CurrentHealth=FMath::Clamp(CurrentHealth+health, 0.0f, MaxHealth);
 	UE_LOG(LogTemp,Warning,TEXT("Health: %f"),CurrentHealth);
+	
 	BroadcastChange();
 }
 
-void UHealthComponent::BroadcastChange()
+void UHealthComponent::BroadcastChange() const
 {
 	if (UpdateHealth.IsBound())
 		UpdateHealth.Broadcast(CurrentHealth);

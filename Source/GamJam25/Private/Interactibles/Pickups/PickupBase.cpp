@@ -4,7 +4,7 @@
 #include "Interactibles/Pickups/PickupBase.h"
 
 #include "Components/SphereComponent.h"
-#include "Interactibles/Pickups/Spells/PickupDataAsset.h"
+#include "Interactibles/Pickups/PickupDataAsset.h"
 #include "Kismet/GameplayStatics.h"
 
 

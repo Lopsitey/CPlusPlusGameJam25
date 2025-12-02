@@ -18,14 +18,19 @@ class GAMJAM25_API UIADataConfig : public UDataAsset
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TSoftObjectPtr<UInputAction> Action;
+	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TSoftObjectPtr<UInputAction> Jump;
+	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TSoftObjectPtr<UInputAction> Move;
+	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	
 	TSoftObjectPtr<UInputAction> Look;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TSoftObjectPtr<UInputAction> Fire;
+	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TSoftObjectPtr<UInputAction> Scroll;
 };

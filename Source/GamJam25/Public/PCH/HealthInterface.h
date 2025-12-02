@@ -6,7 +6,7 @@
 #include "UObject/Interface.h"
 #include "HealthInterface.generated.h"
 
-class FOnHealthChanged;
+class FOnHealthChanged;//forward declaring is like promising it will exist when its needed, as opposed to nclude which is just a constant reference
 // This class does not need to be modified.
 UINTERFACE()
 class UHealthInterface : public UInterface

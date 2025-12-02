@@ -3,7 +3,7 @@
 
 #include "Interactibles/Pickups/HealthPickup.h"
 
-#include "Interactibles/Pickups/Spells/PickupDataAsset.h"
+#include "Interactibles/Pickups/PickupDataAsset.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "PCH/PCH_Interface.h"
 
@@ -29,10 +29,10 @@ void AHealthPickup::OnPickedUp_Implementation(AActor* PickingActor)
 	if (!PickupDA)
 		return;
 
-	float HealthCValue = PickupDA->PickupValue;
+	float HealthValue = PickupDA->PickupValue;
 
 	if (UKismetSystemLibrary::DoesImplementInterface(PickingActor, UPCH_Interface::StaticClass()))
-		IPCH_Interface::Execute_AddHealthFromPickup(PickingActor, HealthCValue);
+		IPCH_Interface::Execute_AddHealthFromPickup(PickingActor, HealthValue);
 }
 
 // Called every frame

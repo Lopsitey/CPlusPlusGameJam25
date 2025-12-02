@@ -51,7 +51,7 @@ void AElectricSpell::SpawnProjectile_Implementation()
 	else
 	{
 		GetWorld()->GetTimerManager().SetTimer(BurstTimer,this,
-			&AElectricSpell::SpawnProjectile,0.05,false);
+			&AElectricSpell::SpawnProjectile,0.05f,false);
 	}
 }
 

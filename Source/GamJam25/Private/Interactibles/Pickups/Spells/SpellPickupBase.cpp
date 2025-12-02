@@ -1,9 +1,6 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
+﻿#include "Interactibles/Pickups/Spells/SpellPickupBase.h"
 
-
-#include "Interactibles/Pickups/Spells/SpellPickupBase.h"
-
-#include "Interactibles/Pickups/Spells/PickupDataAsset.h"
+#include "Interactibles/Pickups/PickupDataAsset.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "PCH/PCH_Interface.h"
 
@@ -19,7 +16,6 @@ ASpellPickupBase::ASpellPickupBase()
 void ASpellPickupBase::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 void ASpellPickupBase::OnPickedUp_Implementation(AActor* PickingActor)
@@ -30,7 +26,7 @@ void ASpellPickupBase::OnPickedUp_Implementation(AActor* PickingActor)
 		return;
 
 	if (UKismetSystemLibrary::DoesImplementInterface(PickingActor, UPCH_Interface::StaticClass()))
-		IPCH_Interface::Execute_AddSpellFromPickup(PickingActor,PickupDA->SpellClass);
+		IPCH_Interface::Execute_AddSpellFromPickup(PickingActor, PickupDA->SpellClass);
 }
 
 // Called every frame
@@ -38,4 +34,3 @@ void ASpellPickupBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
-

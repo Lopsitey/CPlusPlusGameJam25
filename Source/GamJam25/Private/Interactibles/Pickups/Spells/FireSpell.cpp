@@ -48,10 +48,13 @@ void AFireSpell::SpellCast_Implementation()
 			ActiveFirePoint=i;
 			SpawnProjectile();
 		}
+		ActiveFirePoint=0;
+		ModifyAmmo(3);
 	}
-
-	ActiveFirePoint=0;
-	ModifyAmmo(3);
+	else
+	{
+		HandleEmpty();
+	}
 }
 
 void AFireSpell::SpawnProjectile_Implementation()

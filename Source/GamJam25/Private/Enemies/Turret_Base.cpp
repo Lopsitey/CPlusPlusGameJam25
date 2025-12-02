@@ -3,7 +3,7 @@
 #include "Components/ArrowComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "NiagaraFunctionLibrary.h"
-#include "GamJam25/Private/Managers/TurretWorldManager.h"
+#include "../Public/Managers/TurretWorldManager.h"
 
 
 // Sets default values
@@ -64,10 +64,9 @@ void ATurret_Base::Fire_Implementation()
 	const FVector Location = FirePoint->GetComponentLocation();
 	const FRotator Rotation = FirePoint->GetComponentRotation();
 
-	//GetWorld()->SpawnActor(ProjectileClass, &Location, &Rotation);
 	AProjectile_Base* Projectile = GetWorld()->SpawnActor<AProjectile_Base>(ProjectileClass, Location, Rotation);
 	Projectile->BaseDamage = ProjectileDamageOverride;
-	Projectile->SetIgnoredActors(this,GetOwner());
+	Projectile->SetIgnoredActors(this, GetOwner());
 
 	if (FireSound)
 		UGameplayStatics::PlaySound2D(GetWorld(), FireSound, FireAudioVolume);

@@ -3,7 +3,7 @@
 
 #include "Interactibles/Button_Base.h"
 
-#include "GamJam25/Private/Managers/TurretWorldManager.h"
+#include "../Public/Managers/TurretWorldManager.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "PCH/PCH_Interface.h"
 
@@ -59,8 +59,8 @@ void AButton_Base::Interact_Implementation()
 			{
 				Manager->DisableAllTurrets();
 				bInteracted = true;
+				
 			}
-			GEngine->AddOnScreenDebugMessage(-1,2.0f,FColor::Red, TEXT("Turrets Disabled"));
 		}
 	}
 	else
@@ -71,9 +71,8 @@ void AButton_Base::Interact_Implementation()
 			{
 				Manager->EnableAllTurrets();
 				bInteracted = false;
-				
+				UE_LOG(LogTemp,Warning,TEXT("Turrets Enabled"));
 			}
-			GEngine->AddOnScreenDebugMessage(-1,2.0f,FColor::Green, TEXT("Turrets Enabled"));
 		}
 	}
 }

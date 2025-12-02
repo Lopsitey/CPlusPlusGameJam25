@@ -1,9 +1,5 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
+﻿#include "GamJam25/Public/My_GM.h"
 
-
-#include "GamJam25/Public/My_GM.h"
-
-#include "AI/NavigationSystemBase.h"
 #include "Managers/CollectiblesManager.h"
 
 AMy_GM::AMy_GM()
@@ -18,25 +14,24 @@ void AMy_GM::BeginPlay()
 	{
 		UCollectiblesManager* CoinManager = GetWorld()->GetSubsystem<UCollectiblesManager>();
 		CoinManager->OnAllCollectiblesRegistered.AddUniqueDynamic(this, &AMy_GM::SetNumOfCoinsRequired);
-        CoinManager->OnCollectionEvent.AddUniqueDynamic(this, &AMy_GM::LogCollectible);
+		CoinManager->OnCollectionEvent.AddUniqueDynamic(this, &AMy_GM::LogCollectible);
 	}
 }
 
 void AMy_GM::SetNumOfCoinsRequired(uint8 MaxCoins)
 {
-	NumberOfRequiredCollectibles=MaxCoins;
+	NumberOfRequiredCollectibles = MaxCoins;
+	//all coins need to be collected by default - this could be reduced to a set amount
 }
 
 void AMy_GM::LogCollectible()
 {
-	++CurrentNumOfCoins;
-	
 	if (OnUpdateCollectibles.IsBound())
-		OnUpdateCollectibles.Broadcast(CurrentNumOfCoins);
+		OnUpdateCollectibles.Broadcast(++CurrentNumOfCoins);//inline iteration
 
-	if (CurrentNumOfCoins==NumberOfRequiredCollectibles)
+	if (CurrentNumOfCoins == NumberOfRequiredCollectibles)
 	{
 		if (CollectiblesComplete.IsBound())
 			CollectiblesComplete.Broadcast();
-	}	
+	}
 }

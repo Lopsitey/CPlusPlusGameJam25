@@ -52,7 +52,7 @@ private:
 	ASpellBase* EquippedSpell;
 
 	UPROPERTY()
-	TMap<TSubclassOf<ASpellBase>, ASpellBase*> SpawnedSpells;
+	TMap<TSubclassOf<ASpellBase>, ASpellBase*> SpawnedSpells;//used with a cached spell var to keep the instance - for object pooling
 
 	UPROPERTY()
 	TObjectPtr<USkeletalMeshComponent> SkeletalMesh;
