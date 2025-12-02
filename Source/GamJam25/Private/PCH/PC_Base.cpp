@@ -29,6 +29,10 @@ void APC_Base::BeginPlay()
 		GM->OnUpdateCollectibles.AddUniqueDynamic(this, &APC_Base::UpdateScore);
 		GM->CollectiblesComplete.AddUniqueDynamic(this, &APC_Base::GameWin);
 	}
+
+	FInputModeGameOnly GameInputMode;//Only resets to the gameplay input mode from the MainMenu
+	SetInputMode(GameInputMode);
+	bShowMouseCursor = false;
 }
 
 void APC_Base::SetupInputComponent()
@@ -66,6 +70,8 @@ void APC_Base::OnPossess(APawn* InPawn)
 				ActiveHUD->AddToViewport();
 				ActiveHUD->SetMaxHealth(HealthCompInterface->GetMaxHealth());
 				ActiveHUD->OnScoreChanged(0); //initial score display todo  - may want to store score somewhere
+				ActiveHUD->OnWin();//initially hides the win box
+				ActiveHUD->OnDeath();//initially hides the death box
 			}
 		}
 	}
@@ -112,20 +118,24 @@ void APC_Base::Scroll(const FInputActionInstance& Instance)
 	IIA_Interface::Execute_Scroll(LocalPCH, Instance);
 }
 
+void APC_Base::Died()
+{
+	ActiveHUD->OnDeath(true);
+}
+
 void APC_Base::UpdateScore(uint8 score)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 20.f, FColor::Blue, FString::Printf(TEXT("Score: %d"), score));
-	//for printing types which aren't string
-
-	//ActiveHUD->OnScoreChanged(score);
+	ActiveHUD->OnScoreChanged(score);
 }
 
 void APC_Base::GameWin()
 {
-	GEngine->AddOnScreenDebugMessage(-1,20.f,FColor::Green, TEXT("You Win!"));
+	SetIgnoreLookInput(true);
+	SetIgnoreMoveInput(true);
+	ActiveHUD->OnWin(true);
 }
 
 void APC_Base::UpdateHealth(float NewHealth)
 {
-	//ActiveHUD->OnHealthChanged(NewHealth);
+	ActiveHUD->OnHealthChanged(NewHealth);
 }

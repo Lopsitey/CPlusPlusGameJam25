@@ -12,7 +12,7 @@ public class GamJam25 : ModuleRules
 
 		PublicDependencyModuleNames.AddRange(new string[]
 		{
-			"Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "Niagara", "UMG"
+			"Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "Niagara", "UMG", "UnrealEd"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] { });

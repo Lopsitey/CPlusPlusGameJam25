@@ -60,7 +60,6 @@ void AButton_Base::Interact_Implementation()
 				Manager->DisableAllTurrets();
 				bInteracted = true;
 			}
-			GEngine->AddOnScreenDebugMessage(-1,2.0f,FColor::Red, TEXT("Turrets Disabled"));
 		}
 	}
 	else
@@ -73,7 +72,6 @@ void AButton_Base::Interact_Implementation()
 				bInteracted = false;
 				
 			}
-			GEngine->AddOnScreenDebugMessage(-1,2.0f,FColor::Green, TEXT("Turrets Enabled"));
 		}
 	}
 }

@@ -47,6 +47,8 @@ public:
 	void Fire(const FInputActionInstance& Instance);
 	void Scroll(const FInputActionInstance& Instance);
 
+	void Died();
+
 private:
 	UFUNCTION()
 	void UpdateScore(uint8 score);

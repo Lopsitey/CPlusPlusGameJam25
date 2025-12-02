@@ -172,8 +172,8 @@ void APCH_Base::AddSpellFromPickup_Implementation(TSubclassOf<ASpellBase> Spell)
 
 void APCH_Base::PlayerDeath()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "Player Died");
 	APC_Base* PC = Cast<APC_Base>(GetController());
+	PC->Died();
 	PC->SetIgnoreLookInput(true);
 	PC->SetIgnoreMoveInput(true);
 }
