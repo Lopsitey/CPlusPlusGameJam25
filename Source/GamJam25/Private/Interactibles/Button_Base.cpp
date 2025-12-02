@@ -59,7 +59,7 @@ void AButton_Base::Interact_Implementation()
 			{
 				Manager->DisableAllTurrets();
 				bInteracted = true;
-				
+				UE_LOG(LogTemp,Warning,TEXT("Turrets Disabled"));
 			}
 		}
 	}

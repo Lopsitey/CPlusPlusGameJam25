@@ -5,7 +5,6 @@
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
 #include "InputAction.h"
-#include "PCH/PC_Base.h"
 #include "IA_Interface.generated.h"
 
 // This class does not need to be modified.
