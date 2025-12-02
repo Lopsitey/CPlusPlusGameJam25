@@ -6,6 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include "PlayerHUD.generated.h"
 
+class UBorder;
 class UTextBlock;
 class UProgressBar;
 /**
@@ -26,6 +27,12 @@ public:
 
 	UFUNCTION()
 	void SetMaxHealth(float PlayerMaxHealth);
+	
+	UFUNCTION()
+	void OnWin(bool won = false);
+	
+	UFUNCTION()
+	void OnDeath(bool died = false);
 
 protected:
 	UPROPERTY(meta=(BindWidget))
@@ -33,6 +40,12 @@ protected:
 
 	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UTextBlock>ScoreText;
+	
+	UPROPERTY(meta=(BindWidget))
+	TObjectPtr<UBorder>WinBox;
+	
+	UPROPERTY(meta=(BindWidget))
+	TObjectPtr<UBorder>DeathBox;
 
 	float MaxHealth= 100.0f;
 
